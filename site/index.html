@@ -1,67 +1,19 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<title>Platebook Generator</title>
-<style>
-body { font-family: serif; margin: 40px; }
-button { font-size: 16px; }
-</style>
+  <meta charset="utf-8">
+  <title>Platebook Maker</title>
 </head>
 
 <body>
+  <h1>Platebook Maker</h1>
 
-<h1>Platebook Generator</h1>
+  <p>If you see this text, HTML is rendering correctly.</p>
 
-<p>
-Upload a <code>lessons.json</code> file.  
-GitHub will generate a Platebook PDF for download.
-</p>
+  <p><strong>TEST FORM:</strong></p>
 
-<form id="form">
-  <input type="file" id="file" accept=".json" required>
+  <input type="file">
   <br><br>
-  <button type="submit">Generate Platebook</button>
-</form>
-
-<p id="status"></p>
-
-<script>
-const form = document.getElementById("form");
-const status = document.getElementById("status");
-
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  status.textContent = "Uploading… generating PDF (≈20–30 seconds)…";
-
-  const file = document.getElementById("file").files[0];
-  const text = await file.text();
-
-  const res = await fetch(
-    "https://api.github.com/repos/YOUR-USERNAME/platebook-generator/dispatches",
-    {
-      method: "POST",
-      headers: {
-        "Accept": "application/vnd.github+json",
-        "Authorization": "Bearer YOUR_GITHUB_TOKEN"
-      },
-      body: JSON.stringify({
-        event_type: "generate",
-        client_payload: { lessons: text }
-      })
-    }
-  );
-
-  if (res.ok) {
-    status.innerHTML =
-      `Generation started.<br>
-       Go to <a href="https://github.com/YOUR-USERNAME/platebook-generator/actions">
-       Actions → latest run → Artifacts</a> to download the PDF.`;
-  } else {
-    status.textContent = "Error starting generation.";
-  }
-});
-</script>
-
+  <button>TEST BUTTON</button>
 </body>
 </html>
