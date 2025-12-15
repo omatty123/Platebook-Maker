@@ -1,0 +1,36 @@
+name: Generate Platebook
+
+on:
+  repository_dispatch:
+    types: [generate]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Write lessons.json
+      run: |
+        echo '${{ github.event.client_payload.lessons }}' > lessons.json
+
+    - name: Generate PDF
+      run: |
+        python platebook.py lessons.json Platebook.pdf
+
+    - name: Upload PDF
+      uses: actions/upload-artifact@v4
+      with:
+        name: Platebook
+        path: Platebook.pdf
